@@ -26,44 +26,35 @@ Write your code in this editor and press "Run" button to compile and execute it.
 
 
 #include <stdio.h>
+#include <stdbool.h>
 
-int start_Game(){
-    int choice;
-    printf("Pick a spot (1-9)?");
-    scanf("%d",&choice);
-        
-    while (choice<1 || choice>9){
-        printf("Listen Properly Dummy\n");
-        printf("Pick a spot (1-9)?");
-        scanf("%d", &choice);
-    }
-        
-    return choice;
-}
-
-int main(){
-    int i,j;
+int i,j;
 
 //Array of characters for tic tac toe board
+char* ticArr[7][13]= {
+        {" ","-","-","-","-","-","-","-","-","-","-","-"," "},
+        {"|"," ","1"," ","|"," ","2"," ","|"," ","3"," ","|"},
+        {"|","-","-","-","|","-","-","-","|","-","-","-","|"},
+        {"|"," ","4"," ","|"," ","5"," ","|"," ","6"," ","|"},
+        {"|","-","-","-","|","-","-","-","|","-","-","-","|"},
+        {"|"," ","7"," ","|"," ","8"," ","|"," ","9"," ","|"},
+        {" ","-","-","-","-","-","-","-","-","-","-","-"," "}
+        };
 
-    char* ticArr[7][13]= {
-    {" ","-","-","-","-","-","-","-","-","-","-","-"," "},
-    {"|"," ","1"," ","|"," ","2"," ","|"," ","3"," ","|"},
-    {"|","-","-","-","|","-","-","-","|","-","-","-","|"},
-    {"|"," ","4"," ","|"," ","5"," ","|"," ","6"," ","|"},
-    {"|","-","-","-","|","-","-","-","|","-","-","-","|"},
-    {"|"," ","7"," ","|"," ","8"," ","|"," ","9"," ","|"},
-    {" ","-","-","-","-","-","-","-","-","-","-","-"," "}
-    };
+//Have 1-9 correspond with an indice and replace it with "X"
+    int rows[9]={1,1,1,3,3,3,5,5,5};
+    int cols[9]={2,6,10,2,6,10,2,6,10};
 
 //Print array to terminal
-
+void drawBoard(){
+    
     for (i=0; i<7; i++){
         for (j=0; j<13; j++){
             printf("%s", ticArr[i][j]);
         }
         printf("\n");
     }
+}
     
     
 //Input characters either X or O
@@ -91,9 +82,22 @@ int main(){
 
 //Print Question to User to start game
   
-    
-    int choice= start_Game();
-    /*
+
+int start_Game(){
+    int choice;
+    printf("Pick a spot (1-9)?");
+    scanf("%d",&choice);
+        
+    while (choice<1 || choice>9){
+        printf("Listen Properly Dummy\n");
+        printf("Pick a spot (1-9)?");
+        scanf("%d", &choice);
+    }
+        
+    return choice;
+}
+
+/*
     printf("Pick a spot (1-9)?");
     scanf("%d",&choice);
     
@@ -108,25 +112,82 @@ int main(){
     
 /*2a. Create system to pick X or O in correct idicices
             *Only certain indices can have inputs!*
+            
             {
-             [1,2],[1,6],[1,10]
-            ,[3,2],[3,6],[3,10]
-            ,[5,2],[5,6],[5,10]
+                [1,2],[1,6],[1,10]
+            ,[3,2],,6],[3,10]
+            ,[5,2],,6],[5,10]
             }
- */           
-//Have 1-9 correspond with an indice and replace it with "X"
+ */          
+ 
+ 
 
-    int rows[9]={1,1,1,3,3,3,5,5,5};
-    int cols[9]={2,6,10,2,6,10,2,6,10};
+//Function with ternary operator that checks if it should be "X" or "O"
+bool update(int choice, int count){
+    int r= rows[choice-1];
+    int c= cols[choice-1];
     
-    int r=rows[choice-1];
-    int c=cols[choice-1];
-    
-    ticArr[r][c]= "X";
-    
-    for (i=0; i<7; i++){
-        for (j=0; j<13; j++){
-            printf("%s", ticArr[i][j]);
-        }
-        printf("\n");
+    if (ticArr[r][c]== "X" || ticArr[r][c]== "O"){
+        printf("Hey Dummy someones already sitting right there! \n");
+        return false;
     }
+    else{
+        ticArr[r][c]= count % 2 ==0 ? "X" : "O";
+        return true;
+    }
+    
+}
+
+/*
+
+{
+    [1,2],[1,6],[1,10]
+    ,[3,2],[3,6],[3,10]
+    ,[5,2],[5,6],[5,10]
+    }
+
+8 winning combinations: 3 rows, 3 columns, 2 diagonals
+    Row: {[1,2]->[1,6]->[1,10],
+        [3,2]->[3,6]->[3,10],
+        [5,2]->[5,6]->[5,10]
+    }
+    
+    Column: {[1,2]->[3,2]->[5,2],
+        [1,6]->[3,6]->[5,6],
+        [1,10]->[3,10]->[5,10]
+    }
+    
+    Diagonal: {[1,2]->[3,6]->[5,10],
+        [1,10]->[3,6]->[5,2]
+    }
+    
+    while (count>4){
+           if ticArr[i][j][0]== "X" || "O" //rest would be checking if any of the winning combinations works
+}
+
+*/
+
+bool win_State(){
+    
+}
+
+int main(){
+    
+    int choice1;
+    int count= 0;
+    
+    drawBoard();
+
+// Replace count system
+    while (count < 9){
+        choice1=start_Game();
+        if (update(choice1, count)){
+            count++;
+        };
+        drawBoard();
+    }
+    
+  
+}  
+
+
